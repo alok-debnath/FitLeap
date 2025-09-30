@@ -1,35 +1,46 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Link, Tabs } from 'expo-router'
+import { Button, useTheme } from 'tamagui'
+import { Atom, AudioWaveform } from '@tamagui/lucide-icons'
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const theme = useTheme()
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        tabBarActiveTintColor: theme.red10.val,
+        tabBarStyle: {
+          backgroundColor: theme.background.val,
+          borderTopColor: theme.borderColor.val,
+        },
+        headerStyle: {
+          backgroundColor: theme.background.val,
+          borderBottomColor: theme.borderColor.val,
+        },
+        headerTintColor: theme.color.val,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Tab One',
+          tabBarIcon: ({ color }) => <Atom color={color as any} />,
+          headerRight: () => (
+            <Link href="/modal" asChild>
+              <Button mr="$4" size="$2.5">
+                Hello!
+              </Button>
+            </Link>
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="two"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Tab Two',
+          tabBarIcon: ({ color }) => <AudioWaveform color={color as any} />,
         }}
       />
     </Tabs>
-  );
+  )
 }

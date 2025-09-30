@@ -1,98 +1,55 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { ExternalLink } from '@tamagui/lucide-icons'
+import { Anchor, H2, Paragraph, XStack, YStack } from 'tamagui'
+import { ToastControl } from 'components/CurrentToast'
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
-
-export default function HomeScreen() {
+export default function TabOneScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <YStack flex={1} items="center" gap="$8" px="$10" pt="$5" bg="$background">
+      <H2>Tamagui + Expo</H2>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+      <ToastControl />
+
+      <XStack
+        items="center"
+        justify="center"
+        flexWrap="wrap"
+        gap="$1.5"
+        position="absolute"
+        b="$8"
+      >
+        <Paragraph fontSize="$5">Add</Paragraph>
+
+        <Paragraph fontSize="$5" px="$2" py="$1" color="$blue10" bg="$blue5">
+          tamagui.config.ts
+        </Paragraph>
+
+        <Paragraph fontSize="$5">to root and follow the</Paragraph>
+
+        <XStack
+          items="center"
+          gap="$1.5"
+          px="$2"
+          py="$1"
+          rounded="$3"
+          bg="$green5"
+          hoverStyle={{ bg: '$green6' }}
+          pressStyle={{ bg: '$green4' }}
+        >
+          <Anchor
+            href="https://tamagui.dev/docs/core/configuration"
+            textDecorationLine="none"
+            color="$green10"
+            fontSize="$5"
+          >
+            Configuration guide
+          </Anchor>
+          <ExternalLink size="$1" color="$green10" />
+        </XStack>
+
+        <Paragraph fontSize="$5" text="center">
+          to configure your themes and tokens.
+        </Paragraph>
+      </XStack>
+    </YStack>
+  )
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});

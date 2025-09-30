@@ -1,29 +1,22 @@
-import { Link } from 'expo-router';
-import { StyleSheet } from 'react-native';
-
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { Anchor, Paragraph, View, XStack } from 'tamagui'
 
 export default function ModalScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
-      <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
-      </Link>
-    </ThemedView>
-  );
+    <View flex={1} items="center" justify="center">
+      <XStack gap="$2">
+        <Paragraph text="center">Made by</Paragraph>
+        <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
+          @natebirdman,
+        </Anchor>
+        <Anchor
+          color="$accent10"
+          href="https://github.com/tamagui/tamagui"
+          target="_blank"
+          rel="noreferrer"
+        >
+          give it a ⭐️
+        </Anchor>
+      </XStack>
+    </View>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-});
