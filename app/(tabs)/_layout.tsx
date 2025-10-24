@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { BlurView } from 'expo-blur';
@@ -5,23 +6,18 @@ import { Home, Stars, UserCircle2 } from 'lucide-react-native';
 import { Platform, StyleSheet } from 'react-native';
 import { PlatformPressable } from '@react-navigation/elements';
 import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react';
-import { useColor } from '@/hooks/useColor';
-import { Icon } from '@/components/ui/icon';
-import { View } from '@/components/ui/view';
-import { Auth } from '@/components/auth/auth';
-import { Spinner } from '@/components/ui/spinner';
+import { View, Auth } from '../../components/tamagui';
+import { Spinner } from '../../components/tamagui/Spinner';
 import * as Haptics from 'expo-haptics';
 
 export default function TabLayout() {
-  const primary = useColor('primary');
-
   return (
     <View style={{ flex: 1 }}>
       <AuthLoading>
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-          <Spinner size='lg' variant='circle' color='#F8D534' />
+          <Spinner size='large' color='$primaryColor' />
         </View>
       </AuthLoading>
       <Unauthenticated>
@@ -30,7 +26,6 @@ export default function TabLayout() {
       <Authenticated>
         <Tabs
           screenOptions={{
-            tabBarActiveTintColor: primary,
             headerShown: false,
             tabBarButton: (props) => (
               <PlatformPressable
@@ -72,7 +67,7 @@ export default function TabLayout() {
             options={{
               title: 'Home',
               tabBarIcon: ({ color }) => (
-                <Icon name={Home} size={24} color={color} />
+                <Home size={24} color={color} />
               ),
             }}
           />
@@ -82,7 +77,7 @@ export default function TabLayout() {
             options={{
               title: 'Explore',
               tabBarIcon: ({ color }) => (
-                <Icon name={Stars} size={24} color={color} />
+                <Stars size={24} color={color} />
               ),
             }}
           />
@@ -92,7 +87,7 @@ export default function TabLayout() {
             options={{
               title: 'Profile',
               tabBarIcon: ({ color }) => (
-                <Icon name={UserCircle2} size={24} color={color} />
+                <UserCircle2 size={24} color={color} />
               ),
             }}
           />

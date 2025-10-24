@@ -1,114 +1,88 @@
-import { SignOutButton } from "@/components/auth/singout";
-import { Button } from "@/components/ui/button";
-import { Link } from "@/components/ui/link";
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import { ScrollView } from "@/components/ui/scroll-view";
-import { Text } from "@/components/ui/text";
-import { View } from "@/components/ui/view";
-import { useColor } from "@/hooks/useColor";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { BookOpen, Stars, Terminal } from "lucide-react-native";
-import { Dimensions, StyleSheet } from "react-native";
 
-const { width } = Dimensions.get("window");
+import {
+  Button,
+  ScrollView,
+  Text,
+  View,
+  Link,
+  SignOutButton,
+} from '../../components/tamagui';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { BookOpen, Stars, Terminal } from 'lucide-react-native';
 
 export default function HomeScreen() {
   const bottom = useBottomTabBarHeight();
 
-  // Get theme colors using custom hook
-  const cardColor = useColor("card");
-  const borderColor = useColor("border");
-  const primaryColor = useColor("primary");
-  const textColor = useColor("text");
-  const textMutedColor = useColor("textMuted");
-  const codeBlockBg = useColor("codeBackground");
-  const codeTextColor = useColor("codeText");
-
   return (
     <ScrollView
-      style={styles.scrollView}
+      flex={1}
       contentContainerStyle={{ paddingBottom: bottom, paddingHorizontal: 20 }}
       showsVerticalScrollIndicator={false}
     >
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <Text
-            variant="heading"
-            style={[styles.heroTitle, { color: textColor }]}
-          >
+      <View paddingTop={64}>
+        <View flexDirection='row' alignItems='center' justifyContent='space-between'>
+          <Text fontSize={36} fontWeight='800' textAlign='center' marginBottom={16}>
             BNA UI
           </Text>
-          <ModeToggle />
         </View>
       </View>
 
       {/* Hero Section */}
-      <View style={styles.heroSection}>
-        <Text
-          variant="heading"
-          style={[styles.heroTitle, { color: textColor }]}
-        >
+      <View paddingVertical={30} alignItems='center'>
+        <Text fontSize={36} fontWeight='800' textAlign='center' marginBottom={16}>
           Welcome to BNA UI
         </Text>
-        <Text
-          variant="subtitle"
-          style={[styles.heroSubtitle, { color: textMutedColor }]}
-        >
+        <Text textAlign='center' marginBottom={16} opacity={0.8}>
           A beautiful, modern component library for Expo, React Native apps
         </Text>
-        <Text
-          variant="caption"
-          style={[styles.heroDescription, { color: textMutedColor }]}
-        >
+        <Text textAlign='center' lineHeight={24}>
           Build stunning mobile applications with our carefully crafted
           components.
         </Text>
       </View>
 
       {/* Action Buttons */}
-      <View style={styles.actionButtons}>
-        <Link asChild href="/explore">
-          <Button size="lg" icon={Stars}>
+      <View gap={12} marginBottom={40}>
+        <Link asChild href='/explore'>
+          <Button size='$4' icon={Stars}>
             Explore Components
           </Button>
         </Link>
-        <Link asChild href="https://ui.ahmedbna.com">
-          <Button variant="success" size="lg" icon={BookOpen}>
+        <Link asChild href='https://ui.ahmedbna.com'>
+          <Button theme='green' size='$4' icon={BookOpen}>
             Documentation
           </Button>
         </Link>
       </View>
 
       {/* Getting Started */}
-      <View style={styles.gettingStartedSection}>
+      <View marginBottom={20}>
         <View
-          style={[
-            styles.gettingStartedCard,
-            { backgroundColor: cardColor, borderColor },
-          ]}
+          padding={24}
+          borderRadius={16}
+          borderWidth={1}
+          alignItems='center'
+          borderColor='$borderColor'
+          backgroundColor='$cardColor'
         >
-          <View style={styles.terminalHeader}>
-            <Terminal size={20} color={primaryColor} />
-            <Text
-              variant="body"
-              style={[styles.terminalTitle, { color: textColor }]}
-            >
-              Add Components
-            </Text>
+          <View flexDirection='row' alignItems='center' gap={8} marginBottom={16}>
+            <Terminal size={20} color='$primaryColor' />
+            <Text fontWeight='600'>Add Components</Text>
           </View>
-          <View style={[styles.codeBlock, { backgroundColor: codeBlockBg }]}>
-            <Text
-              variant="caption"
-              style={[styles.bashCommand, { color: codeTextColor }]}
-            >
+          <View
+            paddingHorizontal={16}
+            paddingVertical={12}
+            borderRadius={8}
+            marginBottom={16}
+            minWidth='100%'
+            backgroundColor='$codeBackgroundColor'
+          >
+            <Text fontFamily='$mono' fontSize={16} textAlign='center'>
               npx bna-ui add avatar
             </Text>
           </View>
-          <Text
-            variant="caption"
-            style={[styles.installDescription, { color: textMutedColor }]}
-          >
+          <Text textAlign='center' opacity={0.7}>
             Add components to your project with a single command
           </Text>
         </View>
@@ -117,103 +91,11 @@ export default function HomeScreen() {
       <SignOutButton />
 
       {/* Footer */}
-      <View style={styles.footer}>
-        <Text
-          variant="caption"
-          style={[styles.footerText, { color: textMutedColor }]}
-        >
+      <View paddingVertical={40} alignItems='center'>
+        <Text textAlign='center' fontSize={14}>
           Built with ❤️ for Expo, React Native developers by BNA
         </Text>
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  header: {
-    paddingTop: 64,
-  },
-  headerContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  heroSection: {
-    paddingVertical: 30,
-    alignItems: "center",
-    textAlign: "center",
-  },
-  heroTitle: {
-    fontSize: 36,
-    fontWeight: "800",
-    textAlign: "center",
-    marginBottom: 16,
-  },
-  heroSubtitle: {
-    textAlign: "center",
-    marginBottom: 16,
-    opacity: 0.8,
-  },
-  heroDescription: {
-    textAlign: "center",
-    lineHeight: 24,
-    maxWidth: width - 80,
-  },
-  actionButtons: {
-    gap: 12,
-    marginBottom: 40,
-  },
-  gettingStartedSection: {
-    marginBottom: 20,
-  },
-  gettingStartedCard: {
-    padding: 24,
-    borderRadius: 16,
-    borderWidth: 1,
-    alignItems: "center",
-  },
-  terminalHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 16,
-  },
-  terminalTitle: {
-    fontWeight: "600",
-  },
-  codeBlock: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-    minWidth: "100%",
-  },
-  bashCommand: {
-    fontFamily: "monospace",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  installDescription: {
-    textAlign: "center",
-    opacity: 0.7,
-  },
-  gettingStartedText: {
-    textAlign: "center",
-    lineHeight: 24,
-    marginBottom: 20,
-  },
-  gettingStartedButton: {
-    alignSelf: "center",
-  },
-  footer: {
-    paddingVertical: 40,
-    alignItems: "center",
-  },
-  footerText: {
-    textAlign: "center",
-    fontSize: 14,
-  },
-});
