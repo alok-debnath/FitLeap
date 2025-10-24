@@ -1,3 +1,5 @@
+// Color palette for light and dark themes
+
 const lightColors = {
   // Base colors
   background: "#FFFFFF",
@@ -75,6 +77,20 @@ const lightColors = {
 
   codeBackground: "#18181b",
   codeText: "#F2F2F7",
+
+  // Extended palette
+  info: "#2563eb",
+  infoForeground: "#FFFFFF",
+  warning: "#facc15",
+  warningForeground: "#18181b",
+  disabled: "#d1d5db",
+  disabledForeground: "#a1a1aa",
+  overlay: "rgba(0,0,0,0.15)",
+  shadow: "#000000",
+  progress: "#007AFF",
+  selection: "#e0e7ff",
+  selectionForeground: "#18181b",
+  divider: "#e5e7eb",
 };
 
 const darkColors = {
@@ -100,7 +116,7 @@ const darkColors = {
 
   // Muted colors
   muted: "#78788033",
-  mutedForeground: "#c7c7cc", // Updated for better contrast on dark backgrounds
+  mutedForeground: "#c7c7cc",
 
   // Accent colors
   accent: "#1C1C1E",
@@ -112,12 +128,12 @@ const darkColors = {
 
   // Border and input
   border: "#38383A",
-  input: "#1C1C1E", // Changed from rgba to solid color for better text readability
+  input: "#1C1C1E",
   ring: "#71717a",
 
   // Text colors
   text: "#FFFFFF",
-  textMuted: "#c7c7cc", // Updated to match mutedForeground for consistency
+  textMuted: "#c7c7cc",
 
   // Legacy support for existing components
   tint: "#FFFFFF",
@@ -154,6 +170,20 @@ const darkColors = {
 
   codeBackground: "#18181b",
   codeText: "#F2F2F7",
+
+  // Extended palette
+  info: "#3b82f6",
+  infoForeground: "#FFFFFF",
+  warning: "#fde047",
+  warningForeground: "#18181b",
+  disabled: "#374151",
+  disabledForeground: "#a1a1aa",
+  overlay: "rgba(0,0,0,0.6)",
+  shadow: "#000000",
+  progress: "#0A84FF",
+  selection: "#334155",
+  selectionForeground: "#FFFFFF",
+  divider: "#262626",
 };
 
 export const Colors = {
@@ -161,7 +191,6 @@ export const Colors = {
   dark: darkColors,
 };
 
-// Export individual color schemes for easier access
 export { darkColors, lightColors };
 
 // Utility type for color keys
