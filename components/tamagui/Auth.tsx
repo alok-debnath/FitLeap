@@ -1,10 +1,10 @@
 
-import { useAuth } from '@convex-dev/auth/react';
+import { useAuthActions } from '@convex-dev/auth/react';
 import { Button, Input, Text, View } from 'tamagui';
 import { useState } from 'react';
 
 export function Auth() {
-  const { signIn } = useAuth();
+  const { signIn } = useAuthActions();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -23,7 +23,18 @@ export function Auth() {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button onPress={() => signIn({ email, password })}>Sign in</Button>
+      <Button onPress={() => signIn({ provider: 'password', email, password })}>
+        Sign in
+      </Button>
+      <Button onPress={() => signIn({ provider: 'google' })}>
+        Sign in with Google
+      </Button>
+      <Button onPress={() => signIn({ provider: 'apple' })}>
+        Sign in with Apple
+      </Button>
+      <Button onPress={() => signIn({ provider: 'password', flow: 'signUp', email, password })}>
+        Sign up
+      </Button>
     </View>
   );
 }

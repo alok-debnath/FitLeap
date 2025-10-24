@@ -42,6 +42,8 @@ app-example
 /ios
 /android
 
+# Tamagui
+.tamagui/
 
 # Convex
 convex/_generated/
