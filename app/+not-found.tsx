@@ -1,6 +1,6 @@
 
 import { Stack } from 'expo-router';
-import { Link, Text, View } from '../components/tamagui';
+import { Link, Text, View } from '@/components/tamagui';
 
 export default function NotFoundScreen() {
   return (

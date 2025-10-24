@@ -1,5 +1,5 @@
 
-import { Button, ScrollView, Text, View } from '../../components/tamagui';
+import { Button, ScrollView, Text, View } from '@/components/tamagui';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
 import {

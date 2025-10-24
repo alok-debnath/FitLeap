@@ -6,8 +6,8 @@ import { Home, Stars, UserCircle2 } from 'lucide-react-native';
 import { Platform, StyleSheet } from 'react-native';
 import { PlatformPressable } from '@react-navigation/elements';
 import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react';
-import { View, Auth } from '../../components/tamagui';
-import { Spinner } from '../../components/tamagui/Spinner';
+import { View, Auth } from '@/components/tamagui';
+import { Spinner } from '@/components/tamagui/Spinner';
 import * as Haptics from 'expo-haptics';
 
 export default function TabLayout() {

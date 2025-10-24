@@ -1,5 +1,5 @@
 
-import { ScrollView, Text, View } from '../../components/tamagui';
+import { ScrollView, Text, View } from '@/components/tamagui';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 export default function ProfileScreen() {

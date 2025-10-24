@@ -6,7 +6,7 @@ import {
   View,
   Link,
   SignOutButton,
-} from '../../components/tamagui';
+} from '@/components/tamagui';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { BookOpen, Stars, Terminal } from 'lucide-react-native';
 
