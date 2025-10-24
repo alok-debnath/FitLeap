@@ -46,3 +46,4 @@ app-example
 # Convex
 convex/_generated/
 convex/.convex/
+generateKeys.mjs
