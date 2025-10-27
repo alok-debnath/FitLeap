@@ -10,12 +10,10 @@ import { useMutation, useQuery } from 'convex/react'
 import { Edit3 } from 'lucide-react-native'
 import { useEffect, useMemo, useState } from 'react'
 import { Avatar, Card, Paragraph, ScrollView, Separator, Text, XStack, YStack } from 'tamagui'
-import { useTabBarPadding } from '@/hooks/useTabBarPadding'
 
 export default function ProfileScreen() {
   const user = useQuery(api.users.get)
   const updateUser = useMutation(api.users.update)
-  const bottomPadding = useTabBarPadding()
 
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [name, setName] = useState('')
@@ -66,7 +64,7 @@ export default function ProfileScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ paddingBottom: bottomPadding }} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
       <YStack paddingHorizontal="$5" paddingTop="$8" gap="$6">
         <Header title="Your profile" />
 

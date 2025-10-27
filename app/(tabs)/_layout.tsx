@@ -49,32 +49,34 @@ export default function TabLayout() {
         </Unauthenticated>
 
         <Authenticated>
-          <Tabs
-            screenOptions={{
-              headerShown: false,
-              tabBarStyle: { display: "none" },
-            }}
-          >
-            <Tabs.Screen
-              name="index"
-              options={{
-                title: "Home",
+          <YStack flex={1}>
+            <Tabs
+              screenOptions={{
+                headerShown: false,
+                tabBarStyle: { display: "none" },
               }}
-            />
-            <Tabs.Screen
-              name="explore"
-              options={{
-                title: "Explore",
-              }}
-            />
-            <Tabs.Screen
-              name="profile"
-              options={{
-                title: "Profile",
-              }}
-            />
-          </Tabs>
-          <CustomTabBar />
+            >
+              <Tabs.Screen
+                name="index"
+                options={{
+                  title: "Home",
+                }}
+              />
+              <Tabs.Screen
+                name="explore"
+                options={{
+                  title: "Explore",
+                }}
+              />
+              <Tabs.Screen
+                name="profile"
+                options={{
+                  title: "Profile",
+                }}
+              />
+            </Tabs>
+            <CustomTabBar />
+          </YStack>
         </Authenticated>
       </YStack>
     </>
