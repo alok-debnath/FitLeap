@@ -122,37 +122,93 @@ export default function ProfileScreen() {
       </YStack>
 
       <BottomSheet isVisible={isSheetOpen} onClose={() => setIsSheetOpen(false)}>
-        <YStack gap="$4">
-          <Text fontSize="$6" fontWeight="600">
-            Edit profile
-          </Text>
-          <Input
-            label="Name"
-            value={name}
-            onChangeText={setName}
-            placeholder="FitLeap athlete"
-            editable={!saving}
-            autoCapitalize="words"
-          />
-          <Input
-            label="Bio"
-            value={bio}
-            onChangeText={setBio}
-            placeholder="Tell the community about your goals."
-            editable={!saving}
-            multiline
-            numberOfLines={3}
-          />
+        <YStack gap="$5" paddingBottom="$4">
+          <YStack gap="$2" alignItems="center">
+            <Text
+              fontSize="$7"
+              fontWeight="700"
+              color="$color12"
+              textAlign="center"
+            >
+              Edit profile
+            </Text>
+            <Text
+              fontSize="$3"
+              color="$color10"
+              textAlign="center"
+            >
+              Update your information
+            </Text>
+          </YStack>
+
+          <YStack gap="$4">
+            <Input
+              label="Name"
+              value={name}
+              onChangeText={setName}
+              placeholder="FitLeap athlete"
+              editable={!saving}
+              autoCapitalize="words"
+              borderRadius="$4"
+              borderColor="$color6"
+              focusStyle={{
+                borderColor: "$blue10",
+                shadowColor: "$blue10",
+                shadowRadius: 4,
+              }}
+            />
+            <Input
+              label="Bio"
+              value={bio}
+              onChangeText={setBio}
+              placeholder="Tell the community about your goals."
+              editable={!saving}
+              multiline
+              numberOfLines={3}
+              borderRadius="$4"
+              borderColor="$color6"
+              focusStyle={{
+                borderColor: "$blue10",
+                shadowColor: "$blue10",
+                shadowRadius: 4,
+              }}
+            />
+          </YStack>
+
           {error && (
-            <Paragraph size="$3" color="$red10">
-              {error}
-            </Paragraph>
+            <YStack
+              padding="$3"
+              backgroundColor="$red3"
+              borderRadius="$4"
+              borderLeftWidth={4}
+              borderLeftColor="$red10"
+            >
+              <Paragraph size="$3" color="$red11" fontWeight="500">
+                {error}
+              </Paragraph>
+            </YStack>
           )}
+
           <YStack gap="$3">
-            <Button loading={saving} disabled={saving || !name.trim()} onPress={handleSave}>
+            <Button
+              loading={saving}
+              disabled={saving || !name.trim()}
+              onPress={handleSave}
+              borderRadius="$6"
+              shadowColor="$blue10"
+              shadowRadius={8}
+              shadowOpacity={0.3}
+              elevation={4}
+            >
               Save changes
             </Button>
-            <Button variant="outlined" disabled={saving} onPress={() => setIsSheetOpen(false)}>
+            <Button
+              variant="outlined"
+              disabled={saving}
+              onPress={() => setIsSheetOpen(false)}
+              borderRadius="$6"
+              borderColor="$color8"
+            >
               Cancel
             </Button>
           </YStack>
