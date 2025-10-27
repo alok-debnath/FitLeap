@@ -15,15 +15,17 @@ import {
   YStack,
   useTheme,
 } from 'tamagui'
+import { useTabBarPadding } from '@/hooks/useTabBarPadding'
 
 export default function HomeScreen() {
   const theme = useTheme()
+  const bottomPadding = useTabBarPadding()
 
   const accentColor = theme.blue10?.val ?? theme.color11?.val ?? '#2563eb'
   const surface = theme.color2?.val ?? theme.backgroundFocus?.val ?? '#f4f4f5'
 
   return (
-    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={{ paddingBottom: bottomPadding }} showsVerticalScrollIndicator={false}>
       <YStack paddingHorizontal="$5" paddingTop="$8" gap="$8">
         <Header
           title="FitLeap UI"

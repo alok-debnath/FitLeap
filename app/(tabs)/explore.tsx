@@ -25,6 +25,7 @@ import {
   YStack,
   useTheme,
 } from 'tamagui'
+import { useTabBarPadding } from '@/hooks/useTabBarPadding'
 
 interface ComponentItem {
   id: string
@@ -111,11 +112,12 @@ const FEATURES: FeatureItem[] = [
 export default function ExploreScreen() {
   const router = useRouter()
   const theme = useTheme()
+  const bottomPadding = useTabBarPadding()
 
   const accent = theme.blue10?.val ?? theme.color11?.val ?? '#2563eb'
 
   return (
-    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={{ paddingBottom: bottomPadding }} showsVerticalScrollIndicator={false}>
       <YStack paddingHorizontal="$5" paddingTop="$8" gap="$6">
         <Header
           title="Component Library"

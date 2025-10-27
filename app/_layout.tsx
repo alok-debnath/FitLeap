@@ -6,20 +6,16 @@ import { useColorScheme, StatusBar } from 'react-native'
 import { TamaguiProvider } from 'tamagui'
 import { SetNavigationBarColor } from '@/components/ui/SetNavigationBarColor'
 import { ConvexReactClient } from 'convex/react'
-import * as SecureStore from 'expo-secure-store'
 import { ConvexAuthProvider } from '@convex-dev/auth/react'
 
 import { tamaguiConfig } from '../tamagui.config'
+import { createSecureStorage } from '../hooks/useSecureStorage'
 
 const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
   unsavedChangesWarning: false,
 })
 
-const secureStorage = {
-  getItem: SecureStore.getItemAsync,
-  setItem: SecureStore.setItemAsync,
-  removeItem: SecureStore.deleteItemAsync,
-}
+const secureStorage = createSecureStorage()
 
 function StatusBarSetter() {
   const colorScheme = useColorScheme()
