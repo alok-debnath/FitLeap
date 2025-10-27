@@ -1,22 +1,23 @@
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { Colors } from '@/theme/colors';
+import { useTheme } from 'tamagui'
 
 /**
- * useColor hook
- * @param colorName - key from Colors.light and Colors.dark
+ * useColor hook - now uses Tamagui's theming system
+ * @param colorName - key from Tamagui theme colors
  * @param props - optional overrides for light/dark
  * @returns color value string
  */
 export function useColor(
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark,
+  colorName: string,
   props?: { light?: string; dark?: string }
 ) {
-  const theme = useColorScheme() ?? 'light';
-  const colorFromProps = props?.[theme];
+  const theme = useTheme()
 
-  if (colorFromProps) {
-    return colorFromProps;
-  } else {
-    return Colors[theme][colorName];
+  // If props override is provided, use it
+  if (props?.light || props?.dark) {
+    // For now, just return the light version since Tamagui handles theme switching
+    return props.light || props.dark || theme[colorName as keyof typeof theme] || colorName
   }
+
+  // Return the color from Tamagui theme
+  return theme[colorName as keyof typeof theme] || colorName
 }

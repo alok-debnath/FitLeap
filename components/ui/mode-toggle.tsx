@@ -1,58 +1,16 @@
-import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
-import { useModeToggle } from '@/hooks/useModeToggle';
-import { useColor } from '@/hooks/useColor';
-import { Moon, Sun } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import { Button } from 'tamagui'
+import { useModeToggle } from '../../hooks/useModeToggle'
 
-type Props = {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-};
-
-export const ModeToggle = ({ variant = 'outline', size = 'icon' }: Props) => {
-  const { toggleMode, isDark } = useModeToggle();
-  const iconColor = useColor('icon'); // theme-aware icon color
-  const rotation = useSharedValue(0);
-  const scale = useSharedValue(1);
-  const [showIcon, setShowIcon] = useState<'sun' | 'moon'>(
-    isDark ? 'moon' : 'sun'
-  );
-
-  useEffect(() => {
-    // Animate icon change
-    scale.value = withTiming(0, { duration: 150 }, () => {
-      runOnJS(setShowIcon)(isDark ? 'moon' : 'sun');
-      scale.value = withTiming(1, { duration: 150 });
-    });
-
-    // Only rotate when switching to sun (sun rays spinning effect)
-    if (!isDark) {
-      rotation.value = withTiming(rotation.value + 180, { duration: 300 });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDark]);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { rotate: showIcon === 'sun' ? `${rotation.value}deg` : '0deg' },
-        { scale: scale.value },
-      ],
-    };
-  });
+export const ModeToggle = () => {
+  const { toggleMode, mode } = useModeToggle()
 
   return (
-    <Button variant={variant} size={size} onPress={toggleMode}>
-      <Animated.View style={animatedStyle}>
-        <Icon name={showIcon === 'moon' ? Moon : Sun} size={24} color={iconColor} />
-      </Animated.View>
+    <Button
+      onPress={toggleMode}
+      variant="outlined"
+      size="$3"
+    >
+      {mode === 'dark' ? '☀️ Light' : mode === 'light' ? '🌙 Dark' : '🔄 System'}
     </Button>
-  );
-};
+  )
+}

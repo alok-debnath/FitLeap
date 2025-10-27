@@ -1,86 +1,38 @@
-import { useColor } from '@/hooks/useColor';
-import { FONT_SIZE } from '@/theme/globals';
-import React, { forwardRef } from 'react';
-import {
-  Text as RNText,
-  TextProps as RNTextProps,
-  TextStyle,
-} from 'react-native';
+import { Text as TamaguiText, TextProps } from 'tamagui'
 
-type TextVariant =
-  | 'body'
-  | 'title'
-  | 'subtitle'
-  | 'caption'
-  | 'heading'
-  | 'link';
-
-interface TextProps extends RNTextProps {
-  variant?: TextVariant;
-  lightColor?: string;
-  darkColor?: string;
-  children: React.ReactNode;
+export interface CustomTextProps extends TextProps {
+  variant?: 'heading' | 'body' | 'caption' | 'title' | 'subtitle'
 }
 
-export const Text = forwardRef<RNText, TextProps>(
-  (
-    { variant = 'body', lightColor, darkColor, style, children, ...props },
-    ref
-  ) => {
-    const textColor = useColor({ light: lightColor, dark: darkColor }, 'text');
-    const mutedColor = useColor('textMuted');
-
-    const getTextStyle = (): TextStyle => {
-      const baseStyle: TextStyle = {
-        color: textColor,
-      };
-
-      switch (variant) {
-        case 'heading':
-          return {
-            ...baseStyle,
-            fontSize: 28,
-            fontWeight: '800',
-          };
-        case 'title':
-          return {
-            ...baseStyle,
-            fontSize: 24,
-            fontWeight: '700',
-          };
-        case 'subtitle':
-          return {
-            ...baseStyle,
-            fontSize: 19,
-            fontWeight: '600',
-          };
-        case 'caption':
-          return {
-            ...baseStyle,
-            fontSize: FONT_SIZE,
-            fontWeight: '400',
-            color: mutedColor,
-          };
-        case 'link':
-          return {
-            ...baseStyle,
-            fontSize: FONT_SIZE,
-            fontWeight: '500',
-            textDecorationLine: 'underline',
-          };
-        default: // 'body'
-          return {
-            ...baseStyle,
-            fontSize: FONT_SIZE,
-            fontWeight: '400',
-          };
-      }
-    };
-
-    return (
-      <RNText ref={ref} style={[getTextStyle(), style]} {...props}>
-        {children}
-      </RNText>
-    );
+export const Text = ({ variant, ...props }: CustomTextProps) => {
+  const variantProps = {
+    heading: {
+      fontSize: '$7' as any,
+      fontWeight: 'bold' as any,
+    },
+    title: {
+      fontSize: '$6' as any,
+      fontWeight: '600' as any,
+    },
+    subtitle: {
+      fontSize: '$5' as any,
+      color: '$colorHover' as any,
+    },
+    body: {
+      fontSize: '$4' as any,
+    },
+    caption: {
+      fontSize: '$3' as any,
+      color: '$colorHover' as any,
+    },
   }
-);
+
+  return (
+    <TamaguiText
+      {...variantProps[variant || 'body']}
+      {...props}
+    />
+  )
+}
+
+export { TextProps }

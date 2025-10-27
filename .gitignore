@@ -47,3 +47,5 @@ app-example
 convex/_generated/
 convex/.convex/
 generateKeys.mjs
+
+.tamagui/

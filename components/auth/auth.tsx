@@ -1,112 +1,102 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-} from '@/components/ui/card';
-import { View } from '@/components/ui/view';
-import { Text } from '@/components/ui/text';
-import { Link } from '@/components/ui/link';
-import { ScrollView } from '@/components/ui/scroll-view';
-import { AvoidKeyboard } from '@/components/ui/avoid-keyboard';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { SignInWithGoogle } from '@/components/auth/google';
-import { SignInWithApple } from '@/components/auth/apple';
-import { Password } from '@/components/auth/password';
-import { EmailOTP } from './email-otp';
-import { Dimensions } from 'react-native';
+import { YStack, XStack, Text, ScrollView, Card, H1, Paragraph, Button, Separator } from 'tamagui'
+import { SignInWithGoogle } from '@/components/auth/google'
+import { SignInWithApple } from '@/components/auth/apple'
+import { Password } from '@/components/auth/password'
+import { EmailOTP } from './email-otp'
+import { useState } from 'react'
 
-const { width: screenWidth } = Dimensions.get('window');
-
-const tabWidth = (screenWidth - 44) / 3; // 16 padding on each side
+type AuthTab = 'oauth' | 'password' | 'otp'
 
 export const Auth = () => {
+  const [activeTab, setActiveTab] = useState<AuthTab>('oauth')
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'oauth':
+        return (
+          <Card elevate bordered padding="$5" gap="$4">
+            <YStack gap="$3">
+              <Paragraph textAlign="center">
+                Choose a provider to continue with your FitLeap profile.
+              </Paragraph>
+              <Separator />
+              <YStack gap="$3">
+                <SignInWithGoogle />
+                <SignInWithApple />
+              </YStack>
+            </YStack>
+          </Card>
+        )
+      case 'password':
+        return <Password />
+      case 'otp':
+        return <EmailOTP />
+      default:
+        return null
+    }
+  }
+
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 96 }}
-        keyboardShouldPersistTaps='handled'
+    <ScrollView
+      flex={1}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <YStack
+        flex={1}
+        paddingHorizontal="$5"
+        paddingTop="$10"
+        paddingBottom="$6"
+        gap="$6"
       >
-        <Text
-          style={{
-            fontSize: 60,
-            fontWeight: 700,
-            textAlign: 'center',
-          }}
-        >
-          🚀
-        </Text>
-        <Text
-          style={{
-            fontSize: 60,
-            fontWeight: 800,
-            textAlign: 'center',
-            marginBottom: 16,
-          }}
-        >
-          BNA UI
-        </Text>
-
-        <Tabs defaultValue='oauth' enableSwipe={false} style={{ flex: 1 }}>
-          <TabsList>
-            <TabsTrigger value='oauth' style={{ width: tabWidth }}>
-              OAuth
-            </TabsTrigger>
-            <TabsTrigger value='password' style={{ width: tabWidth }}>
-              Password
-            </TabsTrigger>
-            <TabsTrigger value='otp' style={{ width: tabWidth }}>
-              OTP
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value='oauth'>
-            <Card>
-              <CardHeader style={{ paddingBottom: 16 }}>
-                <CardDescription style={{ textAlign: 'center' }}>
-                  Login to your account
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent>
-                <View style={{ gap: 16 }}>
-                  <SignInWithGoogle />
-
-                  <SignInWithApple />
-                </View>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value='password'>
-            <Password />
-          </TabsContent>
-
-          <TabsContent value='otp'>
-            <EmailOTP />
-          </TabsContent>
-        </Tabs>
-
-        <View style={{ padding: 16 }}>
-          <Text variant='caption' style={{ textAlign: 'center' }}>
-            By clicking continue, you agree to our{' '}
-            <Link href='https://ui.ahmedbna.com'>
-              <Text variant='link' style={{ fontSize: 14 }}>
-                Terms of Service
-              </Text>
-            </Link>{' '}
-            and{' '}
-            <Link href='https://ui.ahmedbna.com'>
-              <Text variant='link' style={{ fontSize: 14 }}>
-                Privacy Policy
-              </Text>
-            </Link>
+        <YStack alignItems="center" gap="$2">
+          <Text fontSize={56} accessibilityRole="image">
+            🚀
           </Text>
-        </View>
-      </ScrollView>
+          <H1 fontSize="$13" textAlign="center">
+            FitLeap
+          </H1>
+          <Paragraph size="$3" textAlign="center" color="$color11">
+            Unlock your next milestone with tailored training plans, smart tracking, and accountability.
+          </Paragraph>
+        </YStack>
 
-      <AvoidKeyboard />
-    </View>
-  );
-};
+        <YStack width="100%" maxWidth={420} alignSelf="center" gap="$4">
+          <XStack gap="$2" backgroundColor="$color2" borderRadius="$5" padding="$1">
+            {(
+              [
+                { key: 'oauth', label: 'Providers' },
+                { key: 'password', label: 'Password' },
+                { key: 'otp', label: 'Email OTP' },
+              ] as const
+            ).map(tab => (
+              <Button
+                key={tab.key}
+                flex={1}
+                size="$3"
+                variant={activeTab === tab.key ? undefined : 'outlined'}
+                theme={activeTab === tab.key ? 'accent' : null}
+                onPress={() => setActiveTab(tab.key)}
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </XStack>
+
+          {renderTabContent()}
+
+          <Paragraph size="$3" textAlign="center" color="$color11">
+            By continuing you agree to our{' '}
+            <Text color="$color10" textDecorationLine="underline">
+              Terms of Service
+            </Text>{' '}
+            and{' '}
+            <Text color="$color10" textDecorationLine="underline">
+              Privacy Policy
+            </Text>
+          </Paragraph>
+        </YStack>
+      </YStack>
+    </ScrollView>
+  )
+}

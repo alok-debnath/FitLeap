@@ -1,331 +1,163 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Animated, Image, TouchableOpacity } from "react-native";
-import { View } from "@/components/ui/view";
-import { ScrollView } from "@/components/ui/scroll-view";
-import { Text } from "@/components/ui/text";
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { useMutation, useQuery } from "convex/react";
-import { Edit, LogOut } from "lucide-react-native";
-import { useColor } from "@/hooks/useColor";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { BottomSheet, useBottomSheet } from "@/components/ui/bottom-sheet";
-import { api } from "@/convex/_generated/api";
-import { Skeleton } from "@/components/ui/skeleton";
-import { SignOutButton } from "@/components/auth/singout";
+import { BottomSheet } from '@/components/ui/bottom-sheet'
+import { Button } from '@/components/ui/button'
+import { Header } from '@/components/ui/header'
+import { Input } from '@/components/ui/input'
+import { ModeToggle } from '@/components/ui/mode-toggle'
+import { Skeleton } from '@/components/ui/skeleton'
+import { SignOutButton } from '@/components/auth/singout'
+import { api } from '@/convex/_generated/api'
+import { useMutation, useQuery } from 'convex/react'
+import { Edit3 } from 'lucide-react-native'
+import { useEffect, useMemo, useState } from 'react'
+import { Avatar, Card, Paragraph, ScrollView, Separator, Text, XStack, YStack } from 'tamagui'
 
 export default function ProfileScreen() {
-  const bottom = useBottomTabBarHeight();
-  const user = useQuery(api.users.get);
-  const updateUser = useMutation(api.users.update);
+  const user = useQuery(api.users.get)
+  const updateUser = useMutation(api.users.update)
 
-  // Colors from theme
-  const backgroundColor = useColor("background");
-  const cardColor = useColor("card");
-  const cardForeground = useColor("cardForeground");
-  const borderColor = useColor("border");
-  const primaryColor = useColor("primary");
-  const primaryFg = useColor("primaryForeground");
-  const accentColor = useColor("accent");
-  const destructiveColor = useColor("destructive");
-  const destructiveFg = useColor("destructiveForeground");
-  const mutedColor = useColor("muted");
-  const textColor = useColor("text");
-  const textMutedColor = useColor("textMuted");
-  const inputColor = useColor("input");
-  const shadowColor = useColor("shadow");
-  const selectionColor = useColor("selection");
-
-  // Animation state
-  const cardAnim = useRef(new Animated.Value(0)).current;
-  const avatarAnim = useRef(new Animated.Value(0)).current;
-
-  // Edit bottom sheet state
-  const editSheet = useBottomSheet();
-  const [editName, setEditName] = useState("");
-  const [editBio, setEditBio] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [name, setName] = useState('')
+  const [bio, setBio] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    if (user) {
-      Animated.timing(cardAnim, {
-        toValue: 1,
-        duration: 700,
-        useNativeDriver: true,
-      }).start();
-      Animated.timing(avatarAnim, {
-        toValue: 1,
-        duration: 900,
-        useNativeDriver: true,
-      }).start();
+    if (user && isSheetOpen) {
+      setName(user.name ?? '')
+      setBio(user.bio ?? '')
     }
-  }, [user]);
+  }, [user, isSheetOpen])
 
-  // Skeleton loader for profile
-  const SkeletonProfile = () => (
-    <Card
-      style={{
-        alignItems: "center",
-        padding: 32,
-        marginTop: 32,
-        backgroundColor: cardColor,
-        borderColor: borderColor,
-        borderWidth: 1,
-        borderRadius: 24,
-        shadowColor: shadowColor,
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-      }}
-    >
-      <Skeleton variant="rounded" width={100} height={100} />
-      <Skeleton width={120} height={28} style={{ marginTop: 18 }} />
-      <Skeleton width={220} height={20} style={{ marginTop: 10 }} />
-    </Card>
-  );
+  const initials = useMemo(() => {
+    if (!user?.name) {
+      return 'F'
+    }
+    return user.name
+      .trim()
+      .split(/\s+/)
+      .map(part => part[0]?.toUpperCase() ?? '')
+      .slice(0, 2)
+      .join('') || 'F'
+  }, [user?.name])
 
-  // Handler for edit save
   const handleSave = async () => {
-    setSaving(true);
+    if (!name.trim()) {
+      setError('Please provide your name.')
+      return
+    }
+
+    setSaving(true)
+    setError('')
+
     try {
       await updateUser({
-        name: editName,
-        bio: editBio,
-      });
-      editSheet.close();
-    } catch (e) {
-      // TODO: Handle error, show toast maybe
+        name: name.trim(),
+        bio: bio.trim() || undefined,
+      })
+      setIsSheetOpen(false)
+    } catch (err) {
+      console.error('Profile update failed', err)
+      setError('We could not update your profile. Please try again.')
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
-  };
-
-  // Open edit bottom sheet with user info
-  const handleEditOpen = () => {
-    setEditName(user?.name ?? "");
-    setEditBio(user?.bio ?? "");
-    editSheet.open();
-  };
+  }
 
   return (
-    <>
-      <ScrollView
-        style={{ flex: 1, backgroundColor }}
-        contentContainerStyle={{ padding: 20, paddingBottom: bottom }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={{ paddingTop: 64, paddingBottom: 20 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text variant="heading" style={{ color: textColor }}>
-              Profile
-            </Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <ModeToggle />
-              <TouchableOpacity onPress={handleEditOpen}>
-                <Edit
-                  size={24}
-                  color={textMutedColor}
-                  style={{ marginLeft: 16 }}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+      <YStack paddingHorizontal="$5" paddingTop="$8" gap="$6">
+        <Header title="Your profile" />
 
-        {!user ? (
-          <SkeletonProfile />
+        <XStack justifyContent="flex-end" gap="$2" marginBottom="$4">
+          <ModeToggle />
+          <Button
+            size="$3"
+            variant="outlined"
+            icon={<Edit3 size={16} />}
+            disabled={!user}
+            onPress={() => setIsSheetOpen(true)}
+          >
+            Edit
+          </Button>
+        </XStack>
+
+        {user ? (
+          <Card elevate bordered padding="$5" gap="$4">
+            <XStack gap="$4" alignItems="center">
+              <Avatar circular size="$7" borderWidth={2} borderColor="$color6">
+                {user.image && <Avatar.Image source={{ uri: user.image }} />}
+                <Avatar.Fallback backgroundColor="$color3">
+                  <Text fontWeight="600">{initials}</Text>
+                </Avatar.Fallback>
+              </Avatar>
+              <YStack gap="$1" flex={1}>
+                <Text fontSize="$6" fontWeight="600">
+                  {user.name ?? 'Anonymous athlete'}
+                </Text>
+                {user.email && (
+                  <Paragraph size="$3" color="$color11">
+                    {user.email}
+                  </Paragraph>
+                )}
+              </YStack>
+            </XStack>
+
+            <Separator />
+
+            <Paragraph size="$3" color="$color11">
+              {user.bio && user.bio.trim().length > 0
+                ? user.bio
+                : 'Add a short bio so teammates know a bit more about you.'}
+            </Paragraph>
+          </Card>
         ) : (
-          <Animated.View
-            style={{
-              opacity: cardAnim,
-              transform: [
-                {
-                  translateY: cardAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [30, 0],
-                  }),
-                },
-              ],
-            }}
-          >
-            <Card
-              style={{
-                alignItems: "center",
-                padding: 32,
-                marginTop: 32,
-                backgroundColor: cardColor,
-                borderColor: borderColor,
-                borderWidth: 1,
-                borderRadius: 28,
-                shadowColor: shadowColor,
-                shadowOpacity: 0.13,
-                shadowRadius: 14,
-                elevation: 8,
-              }}
-            >
-              <Animated.View
-                style={{
-                  opacity: avatarAnim,
-                  transform: [
-                    {
-                      scale: avatarAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0.7, 1],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                <View
-                  style={{
-                    borderWidth: 4,
-                    borderColor: accentColor,
-                    borderRadius: 52,
-                    padding: 4,
-                    marginBottom: 18,
-                    backgroundColor: selectionColor,
-                    shadowColor: accentColor,
-                    shadowOpacity: 0.3,
-                    shadowRadius: 10,
-                  }}
-                >
-                  <Image
-                    source={
-                      user.image
-                        ? { uri: user.image }
-                        : {
-                            uri: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                          }
-                    }
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 50,
-                      backgroundColor: mutedColor,
-                    }}
-                  />
-                </View>
-              </Animated.View>
-              <Text
-                variant="title"
-                style={{ marginTop: 6, color: cardForeground }}
-              >
-                {user.name}
-              </Text>
-              <Text
-                style={{
-                  textAlign: "center",
-                  marginTop: 4,
-                  color: textMutedColor,
-                  fontSize: 15,
-                }}
-              >
-                {user.bio ?? "Tell us about yourself!"}
-              </Text>
-            </Card>
-          </Animated.View>
+          <Card bordered padding="$5" gap="$4">
+            <Skeleton width={96} height={96} borderRadius="$6" />
+            <Skeleton width="60%" height={24} />
+            <Skeleton width="80%" height={18} />
+          </Card>
         )}
 
-        {/* Logout button at bottom */}
-        {user && (
-          <Animated.View
-            style={{
-              opacity: cardAnim,
-              marginTop: 44,
-              alignItems: "center",
-            }}
-          >
-            <SignOutButton />
-          </Animated.View>
-        )}
-      </ScrollView>
+        <SignOutButton />
+      </YStack>
 
-      {/* Edit Profile BottomSheet */}
-      <BottomSheet
-        isVisible={editSheet.isVisible}
-        onClose={editSheet.close}
-        title="Edit Profile"
-        snapPoints={[0.5, 0.8]}
-        style={{
-          // Use solid color for better appearance
-          backgroundColor: cardColor, // <--- changed from overlayColor
-        }}
-      >
-        <View
-          style={{
-            padding: 18,
-            backgroundColor: cardColor,
-            borderRadius: 16,
-            shadowColor: shadowColor,
-            shadowOpacity: 0.07,
-            shadowRadius: 6,
-            elevation: 4,
-          }}
-        >
+      <BottomSheet isVisible={isSheetOpen} onClose={() => setIsSheetOpen(false)}>
+        <YStack gap="$4">
+          <Text fontSize="$6" fontWeight="600">
+            Edit profile
+          </Text>
           <Input
             label="Name"
-            value={editName}
-            onChangeText={setEditName}
-            inputStyle={{
-              marginBottom: 16,
-              color: textColor,
-              backgroundColor: inputColor, // solid input field
-              borderRadius: 14,
-              borderColor: primaryColor, // higher contrast border
-              borderWidth: 1.5,
-              paddingHorizontal: 14,
-              paddingVertical: 12,
-              fontSize: 17,
-              shadowColor: shadowColor,
-              shadowOpacity: 0.03,
-              shadowRadius: 2,
-            }}
+            value={name}
+            onChangeText={setName}
+            placeholder="FitLeap athlete"
             editable={!saving}
+            autoCapitalize="words"
           />
           <Input
             label="Bio"
-            value={editBio}
-            onChangeText={setEditBio}
-            multiline
-            inputStyle={{
-              marginBottom: 16,
-              color: textColor,
-              backgroundColor: inputColor,
-              borderRadius: 14,
-              borderColor: primaryColor,
-              borderWidth: 1.5,
-              paddingHorizontal: 14,
-              paddingVertical: 12,
-              fontSize: 16,
-              minHeight: 48,
-              shadowColor: shadowColor,
-              shadowOpacity: 0.03,
-              shadowRadius: 2,
-            }}
+            value={bio}
+            onChangeText={setBio}
+            placeholder="Tell the community about your goals."
             editable={!saving}
+            multiline
+            numberOfLines={3}
           />
-          <Button
-            loading={saving}
-            onPress={handleSave}
-            style={{
-              marginTop: 10,
-              backgroundColor: primaryColor,
-              borderRadius: 14,
-            }}
-            textStyle={{ color: primaryFg, fontWeight: "600" }}
-            disabled={saving || !editName.trim()}
-          >
-            Save Changes
-          </Button>
-        </View>
+          {error && (
+            <Paragraph size="$3" color="$red10">
+              {error}
+            </Paragraph>
+          )}
+          <YStack gap="$3">
+            <Button loading={saving} disabled={saving || !name.trim()} onPress={handleSave}>
+              Save changes
+            </Button>
+            <Button variant="outlined" disabled={saving} onPress={() => setIsSheetOpen(false)}>
+              Cancel
+            </Button>
+          </YStack>
+        </YStack>
       </BottomSheet>
-    </>
-  );
+    </ScrollView>
+  )
 }

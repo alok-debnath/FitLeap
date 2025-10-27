@@ -1,219 +1,117 @@
-import { SignOutButton } from "@/components/auth/singout";
-import { Button } from "@/components/ui/button";
-import { Link } from "@/components/ui/link";
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import { ScrollView } from "@/components/ui/scroll-view";
-import { Text } from "@/components/ui/text";
-import { View } from "@/components/ui/view";
-import { useColor } from "@/hooks/useColor";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { BookOpen, Stars, Terminal } from "lucide-react-native";
-import { Dimensions, StyleSheet } from "react-native";
-
-const { width } = Dimensions.get("window");
+import { SignOutButton } from '@/components/auth/singout'
+import { Button } from '@/components/ui/button'
+import { Header } from '@/components/ui/header'
+import { Link } from '@/components/ui/link'
+import { ModeToggle } from '@/components/ui/mode-toggle'
+import { BookOpen, Stars, Terminal } from 'lucide-react-native'
+import {
+  Card,
+  H1,
+  Paragraph,
+  ScrollView,
+  Separator,
+  Text,
+  XStack,
+  YStack,
+  useTheme,
+} from 'tamagui'
 
 export default function HomeScreen() {
-  const bottom = useBottomTabBarHeight();
+  const theme = useTheme()
 
-  // Get theme colors using custom hook
-  const cardColor = useColor("card");
-  const borderColor = useColor("border");
-  const primaryColor = useColor("primary");
-  const textColor = useColor("text");
-  const textMutedColor = useColor("textMuted");
-  const codeBlockBg = useColor("codeBackground");
-  const codeTextColor = useColor("codeText");
+  const accentColor = theme.blue10?.val ?? theme.color11?.val ?? '#2563eb'
+  const surface = theme.color2?.val ?? theme.backgroundFocus?.val ?? '#f4f4f5'
 
   return (
-    <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={{ paddingBottom: bottom, paddingHorizontal: 20 }}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <Text
-            variant="heading"
-            style={[styles.heroTitle, { color: textColor }]}
-          >
-            BNA UI
+    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+      <YStack paddingHorizontal="$5" paddingTop="$8" gap="$8">
+        <Header
+          title="FitLeap UI"
+          actions={<ModeToggle />}
+        />
+
+        <Card elevate bordered padded>
+          <YStack gap="$5">
+            <YStack gap="$3" alignItems="center">
+              <H1 size="$11" textAlign="center" fontWeight="800">
+                Design faster with Tamagui
+              </H1>
+              <Paragraph size="$4" maxWidth={360} textAlign="center" color="$color11">
+                Compose adaptive layouts, reuse tokens, and deliver a consistent brand experience on every screen.
+              </Paragraph>
+            </YStack>
+
+            <XStack gap="$3" flexWrap="wrap">
+              <Link href="/explore" asChild>
+                <Button size="$5" flexGrow={1} minWidth={160} icon={<Stars size={18} />}
+                >
+                  Explore Components
+                </Button>
+              </Link>
+              <Link href="https://ui.ahmedbna.com" asChild>
+                <Button
+                  size="$5"
+                  flexGrow={1}
+                  minWidth={160}
+                  variant="outlined"
+                  icon={<BookOpen size={18} />}
+                >
+                  Documentation
+                </Button>
+              </Link>
+            </XStack>
+
+            <YStack gap="$3" padding="$4" backgroundColor={surface} borderRadius="$5">
+              <XStack gap="$3" alignItems="center">
+                <Terminal size={20} color={accentColor} />
+                <Text fontWeight="600">Install a component</Text>
+              </XStack>
+              <YStack
+                padding="$3"
+                borderRadius="$4"
+                borderWidth="$0.5"
+                borderColor="$color5"
+                backgroundColor="$color1"
+              >
+                <Text fontSize="$4" textAlign="center">
+                  npx bna-ui add avatar
+                </Text>
+              </YStack>
+              <Paragraph size="$3" color="$color11" textAlign="center">
+                Generate ready-to-use building blocks without leaving your terminal.
+              </Paragraph>
+            </YStack>
+          </YStack>
+        </Card>
+
+        <Separator />
+
+        <YStack gap="$4">
+          <Text fontSize="$6" fontWeight="600">
+            Quick actions
           </Text>
-          <ModeToggle />
-        </View>
-      </View>
+          <XStack gap="$3" flexWrap="wrap">
+            <Link href="/(tabs)/explore" asChild>
+              <Button size="$4" flexBasis="48%" minWidth={160}>
+                Browse library
+              </Button>
+            </Link>
+            <Link href="https://github.com/alok-debnath" asChild>
+              <Button size="$4" variant="outlined" flexBasis="48%" minWidth={160}>
+                View changelog
+              </Button>
+            </Link>
+          </XStack>
+        </YStack>
 
-      {/* Hero Section */}
-      <View style={styles.heroSection}>
-        <Text
-          variant="heading"
-          style={[styles.heroTitle, { color: textColor }]}
-        >
-          Welcome to BNA UI
-        </Text>
-        <Text
-          variant="subtitle"
-          style={[styles.heroSubtitle, { color: textMutedColor }]}
-        >
-          A beautiful, modern component library for Expo, React Native apps
-        </Text>
-        <Text
-          variant="caption"
-          style={[styles.heroDescription, { color: textMutedColor }]}
-        >
-          Build stunning mobile applications with our carefully crafted
-          components.
-        </Text>
-      </View>
+        <SignOutButton />
 
-      {/* Action Buttons */}
-      <View style={styles.actionButtons}>
-        <Link asChild href="/explore">
-          <Button size="lg" icon={Stars}>
-            Explore Components
-          </Button>
-        </Link>
-        <Link asChild href="https://ui.ahmedbna.com">
-          <Button variant="success" size="lg" icon={BookOpen}>
-            Documentation
-          </Button>
-        </Link>
-      </View>
-
-      {/* Getting Started */}
-      <View style={styles.gettingStartedSection}>
-        <View
-          style={[
-            styles.gettingStartedCard,
-            { backgroundColor: cardColor, borderColor },
-          ]}
-        >
-          <View style={styles.terminalHeader}>
-            <Terminal size={20} color={primaryColor} />
-            <Text
-              variant="body"
-              style={[styles.terminalTitle, { color: textColor }]}
-            >
-              Add Components
-            </Text>
-          </View>
-          <View style={[styles.codeBlock, { backgroundColor: codeBlockBg }]}>
-            <Text
-              variant="caption"
-              style={[styles.bashCommand, { color: codeTextColor }]}
-            >
-              npx bna-ui add avatar
-            </Text>
-          </View>
-          <Text
-            variant="caption"
-            style={[styles.installDescription, { color: textMutedColor }]}
-          >
-            Add components to your project with a single command
-          </Text>
-        </View>
-      </View>
-
-      <SignOutButton />
-
-      {/* Footer */}
-      <View style={styles.footer}>
-        <Text
-          variant="caption"
-          style={[styles.footerText, { color: textMutedColor }]}
-        >
-          Built with ❤️ for Expo, React Native developers by BNA
-        </Text>
-      </View>
+        <YStack alignItems="center" paddingBottom="$6">
+          <Paragraph size="$3" color="$color11" textAlign="center">
+            Built with ❤️ using Tamagui themes for a seamless multi-platform experience.
+          </Paragraph>
+        </YStack>
+      </YStack>
     </ScrollView>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  header: {
-    paddingTop: 64,
-  },
-  headerContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  heroSection: {
-    paddingVertical: 30,
-    alignItems: "center",
-    textAlign: "center",
-  },
-  heroTitle: {
-    fontSize: 36,
-    fontWeight: "800",
-    textAlign: "center",
-    marginBottom: 16,
-  },
-  heroSubtitle: {
-    textAlign: "center",
-    marginBottom: 16,
-    opacity: 0.8,
-  },
-  heroDescription: {
-    textAlign: "center",
-    lineHeight: 24,
-    maxWidth: width - 80,
-  },
-  actionButtons: {
-    gap: 12,
-    marginBottom: 40,
-  },
-  gettingStartedSection: {
-    marginBottom: 20,
-  },
-  gettingStartedCard: {
-    padding: 24,
-    borderRadius: 16,
-    borderWidth: 1,
-    alignItems: "center",
-  },
-  terminalHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 16,
-  },
-  terminalTitle: {
-    fontWeight: "600",
-  },
-  codeBlock: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-    minWidth: "100%",
-  },
-  bashCommand: {
-    fontFamily: "monospace",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  installDescription: {
-    textAlign: "center",
-    opacity: 0.7,
-  },
-  gettingStartedText: {
-    textAlign: "center",
-    lineHeight: 24,
-    marginBottom: 20,
-  },
-  gettingStartedButton: {
-    alignSelf: "center",
-  },
-  footer: {
-    paddingVertical: 40,
-    alignItems: "center",
-  },
-  footerText: {
-    textAlign: "center",
-    fontSize: 14,
-  },
-});

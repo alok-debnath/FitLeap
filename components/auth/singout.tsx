@@ -25,10 +25,9 @@ export const SignOutButton = () => {
 
   return isAuthenticated ? (
     <Button
-      size='lg'
-      variant='destructive'
+      size="$5"
       onPress={handleSignOut}
-      icon={LogOut}
+      icon={<LogOut size={18} />}
     >
       Logout
     </Button>
