@@ -8,7 +8,7 @@ import { View } from "@/components/ui/view";
 import { useColor } from "@/hooks/useColor";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { BookOpen, Stars, Terminal } from "lucide-react-native";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View as RNView, Text as RNText } from "react-native";
 
 const { width } = Dimensions.get("window");
 
@@ -42,6 +42,11 @@ export default function HomeScreen() {
           <ModeToggle />
         </View>
       </View>
+
+      {/* NativeWind Test */}
+      <RNView className="h-20 bg-blue-500 items-center justify-center">
+        <RNText className="text-white text-lg font-bold">NativeWind is working!</RNText>
+      </RNView>
 
       {/* Hero Section */}
       <View style={styles.heroSection}>
